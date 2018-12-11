@@ -1,21 +1,22 @@
+---------------------------------File ula.vhd-----------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-
+--------------------------------------------------------------------------------
 entity ula is
 port (
-	a, b : in std_logic_vector(7 downto 0);
-	ula_op : in std_logic_vector(3 downto 0);
-	y : out std_logic_vector(7 downto 0);
-	c, z, n : buffer std_logic
+	a, b 		: in 		std_logic_vector(7 downto 0);
+	ula_op 	: in 		std_logic_vector(3 downto 0);
+	y 			: out 	std_logic_vector(7 downto 0);
+	c, z, n 	: buffer std_logic
 );
 end ula;
-
+--------------------------------------------------------------------------------
 architecture beh of ula is
 begin
 	process(a, b, ula_op) is
-		variable ans : std_logic_vector(8 downto 0);
-		variable anew, bnew : std_logic_vector(8 downto 0);
+		variable ans 			: std_logic_vector(8 downto 0);
+		variable anew, bnew 	: std_logic_vector(8 downto 0);
 	begin
 		anew := "0" & a;
 		bnew := "0" & b;
@@ -33,7 +34,7 @@ begin
 			when "0110" => ans := std_logic_vector(shift_right(unsigned(anew), 1));
 			when "0111" => ans := std_logic_vector(signed(anew) + 1);
 			when "1000" => ans := std_logic_vector(signed(anew) - 1);
-			when others =>
+			when others => ans := "000000000";
 		end case;
 		if (signed(ans) = 0) then
 			z <= '1';
@@ -49,3 +50,4 @@ begin
 		y <= ans(7 downto 0);
 	end process;
 end beh;
+--------------------------------------------------------------------------------
